@@ -1,0 +1,48 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+        maven { url 'http://repo.spring.io/plugins-release' }
+    }
+
+    dependencies {
+        classpath("org.springframework.build.gradle:propdeps-plugin:$propdepsPluginVersion")
+        classpath("org.junit.platform:junit-platform-gradle-plugin:$junitPlatformPluginVersion")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'propdeps'
+apply plugin: 'org.junit.platform.gradle.plugin'
+
+sourceCompatibility = 1.8
+
+group 'com.izeye.samples'
+version '1.0-SNAPSHOT'
+
+repositories {
+    jcenter()
+
+    // If `mavenLocal()` is placed before `jcenter()`,
+    // you can see the source code for libraries in IntelliJ.
+    // Why?
+    mavenLocal()
+}
+
+dependencies {
+    provided("org.projectlombok:lombok:$lombokVersion")
+
+    testCompile("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
+
+    testCompile("junit:junit:$jUnitVersion")
+    testRuntime("org.junit.vintage:junit-vintage-engine:$junitVintageVersion")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.3'
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << '-Xlint:unchecked'
+}
