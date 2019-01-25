@@ -1,19 +1,4 @@
-buildscript {
-    repositories {
-        mavenLocal()
-        jcenter()
-        maven { url 'http://repo.spring.io/plugins-release' }
-    }
-
-    dependencies {
-        classpath("org.springframework.build.gradle:propdeps-plugin:$propdepsPluginVersion")
-        classpath("org.junit.platform:junit-platform-gradle-plugin:$junitPlatformPluginVersion")
-    }
-}
-
 apply plugin: 'java'
-apply plugin: 'propdeps'
-apply plugin: 'org.junit.platform.gradle.plugin'
 
 sourceCompatibility = 1.8
 
@@ -30,7 +15,8 @@ repositories {
 }
 
 dependencies {
-    provided("org.projectlombok:lombok:$lombokVersion")
+    testCompileOnly("org.projectlombok:lombok:$lombokVersion")
+    testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
 
     testCompile("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
@@ -39,8 +25,8 @@ dependencies {
     testRuntime("org.junit.vintage:junit-vintage-engine:$junitVintageVersion")
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.3'
+wrapper {
+    gradleVersion = '5.1.1'
 }
 
 tasks.withType(JavaCompile) {
